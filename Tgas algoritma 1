@@ -1,0 +1,119 @@
+#include <iostream>
+using namespace std;
+
+struct Film
+{
+    string judul;
+    int kode;
+    float rating;
+};
+
+const int MAX_FILM = 5;
+
+void tampilkanFilm(Film films[], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Judul: " << films[i].judul << ", Kode: " << films[i].kode << ", Rating: " << films[i].rating << endl;
+    }
+}
+
+Film *cariKode(Film films[], int n, int kode)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (films[i].kode == kode)
+            return &films[i];
+    }
+    return nullptr;
+}
+
+int binarySearch(Film films[], int left, int right, string judul)
+{
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (films[mid].judul == judul)
+            return mid;
+        else if (films[mid].judul < judul)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return -1;
+}
+
+void quickSort(Film films[], int low, int high)
+{
+    if (low < high)
+    {
+        float pivot = films[high].rating;
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+        {
+            if (films[j].rating < pivot)
+            {
+                i++;
+                swap(films[i], films[j]);
+            }
+        }
+        swap(films[i + 1], films[high]);
+        int pi = i + 1;
+        quickSort(films, low, pi - 1);
+        quickSort(films, pi + 1, high);
+    }
+}
+
+void bubbleSort(Film films[], int n, bool ascending)
+{
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if ((ascending && films[j].rating > films[j + 1].rating) ||
+                (!ascending && films[j].rating < films[j + 1].rating))
+            {
+                Film temp = films[j];
+                films[j] = films[j + 1];
+                films[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main()
+{
+    Film films[MAX_FILM] = {
+        {"Naruto", 101, 8.5},
+        {"Solo Leveling", 102, 9.0},
+        {"Bleach", 103, 8.2},
+        {"One Piece", 104, 8.9},
+        {"Dragon Ball", 105, 8.7}};
+
+    cout << "Data Film Awal:\n";
+    tampilkanFilm(films, MAX_FILM);
+
+    int kodeCari = 103;
+    Film *hasilCariKode = cariKode(films, MAX_FILM, kodeCari);
+    if (hasilCariKode)
+        cout << "\nFilm ditemukan berdasarkan kode: " << hasilCariKode->judul << endl;
+    else
+        cout << "\nFilm tidak ditemukan berdasarkan kode." << endl;
+
+    quickSort(films, 0, MAX_FILM - 1);
+    cout << "\nData Film Setelah Sorting (Ascending Rating - Quick Sort):\n";
+    tampilkanFilm(films, MAX_FILM);
+
+    bubbleSort(films, MAX_FILM, false);
+    cout << "\nData Film Setelah Sorting (Descending Rating - Bubble Sort):\n";
+    tampilkanFilm(films, MAX_FILM);
+
+    string judulCari = "Bleach";
+    int hasilCariJudul = binarySearch(films, 0, MAX_FILM - 1, judulCari);
+    if (hasilCariJudul != -1)
+        cout << "\nFilm ditemukan berdasarkan judul: " << films[hasilCariJudul].judul << endl;
+    else
+        cout << "\nFilm tidak ditemukan berdasarkan judul." << endl;
+
+    return 0;
+}
