@@ -101,11 +101,11 @@ int main()
         cout << "\nFilm tidak ditemukan berdasarkan kode." << endl;
 
     quickSort(films, 0, MAX_FILM - 1);
-    cout << "\nData Film Setelah Sorting (Ascending Rating - Quick Sort):\n";
+    cout << "\nData Film Setelah Sorting :\n";
     tampilkanFilm(films, MAX_FILM);
 
     bubbleSort(films, MAX_FILM, false);
-    cout << "\nData Film Setelah Sorting (Descending Rating - Bubble Sort):\n";
+    cout << "\nData Film Setelah Sorting :\n";
     tampilkanFilm(films, MAX_FILM);
 
     string judulCari = "Bleach";
